@@ -1,13 +1,17 @@
 // Components
-import InfoSection from "@/components/InfoSection";
+import AboutSection from "@/components/AboutSection";
 import PrimarySection from "@/components/PrimarySection";
+import FeaturedSection from "@/components/FeaturedSection";
+import CtaSection from "@/components/CtaSection";
 
 // 
 export default function Home() {
   return (
     <>
       <PrimarySection />
-      <InfoSection />
+      <AboutSection />
+      <FeaturedSection />
+      <CtaSection />
     </>
   );
 }
