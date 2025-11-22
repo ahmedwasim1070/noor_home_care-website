@@ -6,8 +6,8 @@ import { GlobalProvider } from "@/providers/GlobalProvider";
 
 // Metadata
 export const metadata: Metadata = {
-  title: 'Noor Home Care',
-  description: 'Noor Home Care provides quality home care services. Contact us for personalized care and support.',
+  title: 'Home Care | Caregiver & Caretaker For Elderly | Noor Home Care',
+  description: 'Caregiver Servicse For Elderly At Home | Hire Caretaker For Your Senior Loved Ones | Noor Home Care',
   authors: [{ name: 'ahmedwasim1070' }],
 
   icons: {
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'Noor Home Care - Compassionate Care for Your Loved Ones',
-    description: 'Noor Home Care provides personalized home care services. Get in touch with us to learn more.',
+    title: 'Home Care | Caregiver & Caretaker For Elderly | Noor Home Care',
+    description: 'Caregiver Servicse For Elderly At Home | Hire Caretaker For Your Senior Loved Ones | Noor Home Care',
     url: 'https://www.noorhomecare.co.uk',
     siteName: 'Noor Home Care',
     images: [
@@ -33,7 +33,6 @@ export const metadata: Metadata = {
     locale: 'en_GB',
   },
   verification: {
-    // Add verification tokens here if needed
   },
 }
 
@@ -45,7 +44,7 @@ export const jsonLd = {
   url: 'https://www.noorhomecare.co.uk',
   logo: 'https://www.noorhomecare.co.uk/images/logo.jpg',
   image: 'https://www.noorhomecare.co.uk/images/og-image.png',
-  description: 'Noor Home Care provides quality home care services. Contact us for personalized care and support.',
+  description: 'Caregiver Servicse For Elderly At Home | Hire Caretaker For Your Senior Loved Ones | Noor Home Care',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Hull',

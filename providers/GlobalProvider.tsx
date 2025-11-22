@@ -10,12 +10,19 @@ import { Mail, MapPin, Phone } from "lucide-react";
 
 // Interfaces
 interface ProviderProps {
-    pathname: string;
     contactInfo: string[];
-    contactIcon: ReactNode[];
+    icons: ReactNode[];
+    primaryNav: PrimaryNav[];
 }
 interface Props {
     children: ReactNode;
+}
+
+// Types
+type PrimaryNav = {
+    label: string;
+    href: string;
+    isActive: boolean;
 }
 
 // Context
@@ -25,6 +32,20 @@ const Context = createContext<ProviderProps | undefined>(undefined);
 export const GlobalProvider = ({ children }: Props) => {
     // Path
     const pathname = usePathname();
+    // Nav
+    // Primary Nav
+    const primaryNav = [
+        {
+            label: 'About',
+            href: '/about',
+            isActive: pathname === '/about',
+        },
+        {
+            label: 'Careers',
+            href: '/careers',
+            isActive: pathname === '/careers',
+        },
+    ]
     // Contact
     // info for contact
     const contactInfo = [
@@ -33,14 +54,14 @@ export const GlobalProvider = ({ children }: Props) => {
         'Kingston upon Hull , United Kingdom'
     ]
     // Icon for contact
-    const contactIcon = [
-        <Mail className="w-5 h-5" />,
-        <Phone className="w-5 h-5" />,
-        <MapPin className="w-5 h-5" />
+    const icons = [
+        <Mail className="w-4 h-4" />,
+        <Phone className="w-4 h-4" />,
+        <MapPin className="w-4 h-4" />
     ]
 
     return (
-        <Context.Provider value={{ pathname, contactInfo, contactIcon }}>
+        <Context.Provider value={{ primaryNav, contactInfo, icons }}>
             {/*  */}
             <Header />
 

@@ -1,9 +1,10 @@
 // Imports
 import Image from "next/image";
-import { Utensils, ShoppingBag, Pill, Heart, Home, Users, Clock, icons } from 'lucide-react';
+import { Utensils, ShoppingBag, Pill, Heart, } from 'lucide-react';
 
 // 
 function FeaturedSection() {
+    // 
     const specialization = [
         {
             icon: Utensils,
@@ -26,61 +27,68 @@ function FeaturedSection() {
             description: "Friendly support and conversation",
         },
     ]
-    // 
-    const services = [
-        {
-            icon: Heart,
-            title: "Personalized Assistance",
-            description: "From meal preparation and medication reminders to mobility support and personal hygiene, we're here to help you manage daily activities with ease.",
-            features: ["Meal Preparation", "Medication Reminders", "Mobility Support", "Personal Hygiene"]
-        },
-        {
-            icon: Home,
-            title: "Household Support",
-            description: "Light housekeeping, errands, and meal planning to ensure your home stays a safe and welcoming environment.",
-            features: ["Light Housekeeping", "Running Errands", "Meal Planning", "Home Safety"]
-        },
-        {
-            icon: Users,
-            title: "Respite Care",
-            description: "Temporary relief for primary caregivers, allowing them time to recharge while their loved one is well supported.",
-            features: ["Caregiver Relief", "Flexible Scheduling", "Professional Support", "Peace of Mind"]
-        },
-        {
-            icon: Clock,
-            title: "Flexible Care Options",
-            description: "Whether you need hourly support, full-time care, or something in between, we're here to provide the right care at the right time.",
-            features: ["Hourly Support", "Full-Time Care", "Part-Time Options", "Customized Plans"]
-        }
-    ];
 
     return (
-        <section>
+        <section aria-label="Features and specialization of our Home Care">
             {/*  */}
-            <div className="max-w-7xl mx-auto px-6 pb-6 md:pb-8 pt-12 md:pt-20">
+            <div className="max-w-7xl mx-auto px-6">
                 {/*  */}
-                <div className="shadow-2xl rounded-lg border border-primary/20 overflow-hidden flex flex-row">
-                    <div className="w-[50%] relative">
-                        <Image className="h-full" src={'/images/hero.webp'} width={1920} height={1080} alt="Noor Home Care - Business Directory and Home Care Logo" />
+                <div className="shadow-2xl rounded-lg border border-primary/20 overflow-hidden flex flex-col lg:flex-row">
 
-                        <div className="absolute inset-0 bg-black/20 p-8 flex justify-center items-center ">
-                            <div className="backdrop-blur-xl rounded-lg p-6 space-y-2 min-w-full text-center">
-                                <h5 className="font-bold text-3xl text-white">We Specalize In  </h5>
-                                <p className="text-white">Our Professional Team is specialized in  </p>
+                    {/*  */}
+                    <div className="w-full lg:w-[50%] relative">
+                        {/*  */}
+                        <Image className="min-h-[500px] h-full object-cover" src={'/images/primary.webp'} width={1920} height={1080} alt="" />
+
+                        {/*  */}
+                        <div className="absolute inset-0 bg-black/20 p-4 sm:p-8 flex justify-center items-center ">
+                            <div className="backdrop-blur-xl rounded-lg p-4 sm:p-6 space-y-4 sm:space-y-6 min-w-full text-center">
+                                {/*  */}
+                                <h2 className="font-bold text-2xl sm:text-3xl text-white">Our Features</h2>
+
+                                {/*  */}
+                                <article className="text-white">
+                                    <div className="space-y-4 sm:space-y-6 text-left">
+                                        <div className="flex items-start space-x-4">
+                                            <div>
+                                                <h4 className="text-base sm:text-lg font-bold text-white" >Local Coverage</h4>
+                                                <p className="text-sm sm:text-base text-gray-50">Serving Kingston upon Hull and surrounding areas</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start space-x-4">
+                                            <div>
+                                                <h4 className="text-base sm:text-lg font-bold text-white">Flexible Care</h4>
+                                                <p className="text-sm sm:text-base text-gray-50">Personalized plans tailored to your schedule and needs</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-start space-x-4">
+                                            <div>
+                                                <h4 className="text-base sm:text-lg font-bold text-white" >Family Welcome</h4>
+                                                <p className="text-sm sm:text-base text-gray-50">Your loved ones are always encouraged to visit</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </article>
                             </div>
                         </div>
                     </div>
 
                     {/*  */}
-                    <div className="w-[50%] bg-primary p-4">
-                        <div className="grid grid-cols-2 gap-6">
+                    <div className="w-full lg:w-[50%] bg-linear-to-br from-primary/95 via-primary/90 to-primary/85 p-4">
+                        {/*  */}
+
+                        <h3 className="text-center text-white font-bold text-2xl sm:text-3xl my-4">We Specalize In</h3>
+                        {/*  */}
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             {specialization.map((item, idx) => {
                                 const Icon = item.icon;
                                 return (
                                     <div key={idx} className="bg-white flex flex-col items-center justify-center rounded-lg p-4 text-center">
-                                        <Icon className="w-12 h-12 text-secondary my-2" />
-                                        <p className="text-xl font-bold text-primary">{item.title}</p>
-                                        <p className="text-gray-500">{item.description}</p>
+                                        <Icon className="w-10 h-10 sm:w-12 sm:h-12 text-secondary my-2" />
+                                        <p className="text-lg sm:text-xl font-bold text-primary">{item.title}</p>
+                                        <p className="text-sm sm:text-base text-gray-500">{item.description}</p>
                                     </div>
                                 );
                             })}
@@ -88,7 +96,6 @@ function FeaturedSection() {
                     </div>
 
                 </div>
-
 
             </div>
         </section>
