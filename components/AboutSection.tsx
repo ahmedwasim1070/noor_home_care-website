@@ -139,9 +139,6 @@ function AboutSection() {
           </div>
         </article>
 
-        {/* ==========================================
-                    What We Offer Section
-                    ========================================== */}
         <article className="mb-12 sm:mb-16">
           <h2 className="text-primary text-3xl sm:text-4xl font-bold mb-6">
             What We Offer
@@ -218,9 +215,6 @@ function AboutSection() {
           </div>
         </article>
 
-        {/* ==========================================
-                    Join Our Team Section
-                    ========================================== */}
         <article className="mb-12 sm:mb-16">
           <h2 className="text-primary text-3xl sm:text-4xl font-bold mb-6">
             Looking To Join Our Staff?
