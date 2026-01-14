@@ -5,20 +5,24 @@ import { useState, useRef, ChangeEvent, FormEvent, DragEvent } from "react";
 import { Upload, FileText, X, Send, Loader2, AlertCircle } from "lucide-react";
 // Types
 import {
-  applyJobFormData,
-  applyJobFormError,
-  applyJobFormInputs,
+  ApiResponse,
+  jobFormData,
+  jobFormErrors,
+  jobFormInputs,
 } from "@/types";
+//
+import { validateJobForm } from "@/lib/validators";
+import toast from "react-hot-toast";
 
 function ApplyForm() {
   // State
-  const [formData, setFormData] = useState<applyJobFormData>({
+  const [jobFormData, setJobFormData] = useState<jobFormData>({
     fullName: "",
     email: "",
     phoneNumber: "",
     cv: null,
   });
-  const [formError, setFormError] = useState<applyJobFormError>({
+  const [formErrors, setFormErrors] = useState<jobFormErrors>({
     fullName: null,
     email: null,
     phoneNumber: null,
@@ -29,7 +33,7 @@ function ApplyForm() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Configuration
-  const inputs: applyJobFormInputs[] = [
+  const inputs: jobFormInputs[] = [
     {
       label: "Full Name",
       name: "fullName",
@@ -56,11 +60,11 @@ function ApplyForm() {
   // Handle Text Inputs
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setJobFormData((prev) => ({ ...prev, [name]: value }));
 
     // Clear error when user types
-    if (formError[name as keyof applyJobFormError]) {
-      setFormError((prev) => ({ ...prev, [name]: null }));
+    if (formErrors[name as keyof jobFormErrors]) {
+      setFormErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
@@ -94,92 +98,86 @@ function ApplyForm() {
 
   // File Validation Helper
   const validateAndSetFile = (file: File) => {
-    const validTypes = [
-      "application/pdf",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    ];
-    if (validTypes.includes(file.type)) {
-      setFormData((prev) => ({ ...prev, cv: file }));
-      setFormError((prev) => ({ ...prev, cv: null })); // Clear CV error
-    } else {
-      setFormError((prev) => ({
+    const validType = "application/pdf";
+    const maxSizeInBytes = 5 * 1024 * 1024;
+
+    if (file.type !== validType) {
+      setFormErrors((prev) => ({
         ...prev,
-        cv: "Please upload a PDF or Word document.",
+        cv: "Please upload a PDF document.",
       }));
+      return;
     }
+
+    if (file.size > maxSizeInBytes) {
+      setFormErrors((prev) => ({
+        ...prev,
+        cv: "File size exceeds the 5MB limit.",
+      }));
+      return;
+    }
+
+    setJobFormData((prev) => ({ ...prev, cv: file }));
+    setFormErrors((prev) => ({ ...prev, cv: null }));
   };
 
   // Remove File
   const removeFile = () => {
-    setFormData((prev) => ({ ...prev, cv: null }));
+    setJobFormData((prev) => ({ ...prev, cv: null }));
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Form Validator
-  const isValidApplyForm = (): boolean => {
-    let isValid = true;
-    const newErrors: applyJobFormError = {
-      fullName: null,
-      email: null,
-      phoneNumber: null,
-      cv: null,
-    };
-
-    // Name Validation
-    if (formData.fullName.length < 3 || formData.fullName.length > 50) {
-      newErrors.fullName = "Name must be between 3 and 50 characters.";
-      isValid = false;
-    }
-
-    // Email Validation
-    const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (formData.email.length === 0 || !formData.email.match(EMAIL_REGEX)) {
-      newErrors.email = "Please enter a valid email address.";
-      isValid = false;
-    }
-
-    // Phone Validation (Optional but validated if present)
-    const CONTACT_REGEX = /^\+?[0-9]{7,15}$/;
-    if (
-      formData.phoneNumber.length > 0 &&
-      !formData.phoneNumber.match(CONTACT_REGEX)
-    ) {
-      newErrors.phoneNumber =
-        "Please enter a valid phone number (digits only).";
-      isValid = false;
-    }
-
-    // CV Validation
-    if (!formData.cv) {
-      newErrors.cv = "Please upload your CV before submitting.";
-      isValid = false;
-    }
-
-    setFormError(newErrors);
-    return isValid;
-  };
-
-  // Fake Submit
+  // Submit
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!isValidApplyForm()) {
-      return;
-    }
+    const jobFormError = validateJobForm(jobFormData, setFormErrors);
+    if (jobFormError) return;
 
     setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+      formData.append("fullName", jobFormData.fullName);
+      formData.append("email", jobFormData.email);
+      formData.append("phoneNumber", jobFormData.phoneNumber);
+      if (jobFormData.cv) formData.append("cv", jobFormData.cv);
 
-    // Simulate API call
-    console.log("Submitting Form Data:", formData);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/send/job-application`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = (await res.json()) as ApiResponse<null | never>;
+      if (!data.success) {
+        throw new Error(data.message);
+      }
 
-    setIsSubmitting(false);
-    alert("Application Submitted Successfully!");
-
-    // Reset form
-    setFormData({ fullName: "", email: "", phoneNumber: "", cv: null });
-    setFormError({ fullName: null, email: null, phoneNumber: null, cv: null });
+      toast.success(data.message);
+    } catch (err) {
+      // Message
+      const msg = err instanceof Error ? err.message : "Unexpected error.";
+      toast.error(msg);
+      // Console
+      console.error(
+        "Error in handleSubmit in ApplyForm.",
+        "Message : ",
+        msg,
+        "Error : ",
+        err
+      );
+      //
+    } finally {
+      setIsSubmitting(false);
+      setJobFormData({ fullName: "", email: "", phoneNumber: "", cv: null });
+      setFormErrors({
+        fullName: null,
+        email: null,
+        phoneNumber: null,
+        cv: null,
+      });
+    }
   };
 
   return (
@@ -206,14 +204,14 @@ function ApplyForm() {
                 <div key={input.name} className="flex flex-col gap-y-2 group">
                   <label
                     className={`font-bold text-sm ml-1 transition-colors ${
-                      formError[input.name]
+                      formErrors[input.name]
                         ? "text-red-500"
                         : "text-primary group-focus-within:text-secondary"
                     }`}
                     htmlFor={input.name}
                   >
                     {input.label}{" "}
-                    {input.isRequired && !formError[input.name] && (
+                    {input.isRequired && !formErrors[input.name] && (
                       <span className="text-red-500">*</span>
                     )}
                   </label>
@@ -223,17 +221,17 @@ function ApplyForm() {
                       id={input.name}
                       name={input.name}
                       type={input.type}
-                      value={formData[input.name] as string}
+                      value={jobFormData[input.name] as string}
                       onChange={handleInputChange}
                       className={`w-full border rounded-xl px-4 py-3 text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:bg-white transition-all duration-300 ${
-                        formError[input.name]
+                        formErrors[input.name]
                           ? "border-red-500 bg-red-50 focus:ring-red-200"
                           : "bg-gray-50 border-gray-200 focus:ring-secondary/50"
                       }`}
                       placeholder={input.placeholder}
                     />
                     {/* Error Icon inside input */}
-                    {formError[input.name] && (
+                    {formErrors[input.name] && (
                       <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                         <AlertCircle className="h-5 w-5 text-red-500" />
                       </div>
@@ -241,9 +239,9 @@ function ApplyForm() {
                   </div>
 
                   {/* Error Message */}
-                  {formError[input.name] && (
+                  {formErrors[input.name] && (
                     <p className="text-red-500 text-xs ml-1 font-medium animate-pulse">
-                      {formError[input.name]}
+                      {formErrors[input.name]}
                     </p>
                   )}
                 </div>
@@ -254,18 +252,18 @@ function ApplyForm() {
             <div className="space-y-2">
               <label
                 className={`font-bold text-sm ml-1 ${
-                  formError.cv ? "text-red-500" : "text-primary"
+                  formErrors.cv ? "text-red-500" : "text-primary"
                 }`}
               >
-                Upload CV (PDF/Word) <span className="text-red-500">*</span>
+                Upload CV (Only PDF) <span className="text-red-500">*</span>
               </label>
 
-              {!formData.cv ? (
+              {!jobFormData.cv ? (
                 <div
                   className={`relative flex flex-col items-center justify-center w-full h-48 rounded-xl border-2 border-dashed transition-all duration-300 ease-in-out cursor-pointer group
                   ${
-                    formError.cv
-                      ? "border-red-300 bg-red-50 hover:bg-red-100" // Error State Style
+                    formErrors.cv
+                      ? "border-red-300 bg-red-50 hover:bg-red-100"
                       : dragActive
                       ? "border-secondary bg-light-secondary/30 scale-[1.01]"
                       : "border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-secondary/50"
@@ -280,7 +278,7 @@ function ApplyForm() {
                     ref={fileInputRef}
                     type="file"
                     className="hidden"
-                    accept=".pdf,.doc,.docx"
+                    accept=".pdf"
                     onChange={handleFileChange}
                   />
 
@@ -289,7 +287,7 @@ function ApplyForm() {
                   >
                     <Upload
                       className={`w-6 h-6 ${
-                        formError.cv
+                        formErrors.cv
                           ? "text-red-500"
                           : dragActive
                           ? "text-secondary"
@@ -300,12 +298,12 @@ function ApplyForm() {
 
                   <p
                     className={`text-sm font-medium ${
-                      formError.cv ? "text-red-500" : "text-gray-600"
+                      formErrors.cv ? "text-red-500" : "text-gray-600"
                     }`}
                   >
                     <span
                       className={`font-bold ${
-                        formError.cv ? "text-red-600" : "text-secondary"
+                        formErrors.cv ? "text-red-600" : "text-secondary"
                       }`}
                     >
                       Click to upload
@@ -314,10 +312,10 @@ function ApplyForm() {
                   </p>
                   <p
                     className={`text-xs mt-1 ${
-                      formError.cv ? "text-red-400" : "text-gray-400"
+                      formErrors.cv ? "text-red-400" : "text-gray-400"
                     }`}
                   >
-                    PDF, DOC up to 5MB
+                    PDF up to 5MB
                   </p>
                 </div>
               ) : (
@@ -328,10 +326,10 @@ function ApplyForm() {
                   </div>
                   <div className="flex-1 overflow-hidden">
                     <p className="text-sm font-bold text-primary truncate">
-                      {formData.cv.name}
+                      {jobFormData.cv.name}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {(formData.cv.size / 1024 / 1024).toFixed(2)} MB
+                      {(jobFormData.cv.size / 1024 / 1024).toFixed(2)} MB
                     </p>
                   </div>
                   <button
@@ -346,9 +344,9 @@ function ApplyForm() {
               )}
 
               {/* CV Error Message */}
-              {formError.cv && (
+              {formErrors.cv && (
                 <p className="text-red-500 text-xs ml-1 font-medium animate-pulse">
-                  {formError.cv}
+                  {formErrors.cv}
                 </p>
               )}
             </div>

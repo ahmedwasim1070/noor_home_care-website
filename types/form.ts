@@ -1,20 +1,20 @@
 // Form data
 // Apply job Form
-export interface applyJobFormData {
+export interface jobFormData {
     fullName: string;
     email: string;
     phoneNumber: string;
     cv: File | null;
 }
-export interface applyJobFormError {
+export interface jobFormErrors {
     fullName: string | null;
     email: string | null;
     phoneNumber: string | null;
     cv: string | null;
 }
-export interface applyJobFormInputs {
+export interface jobFormInputs {
     label: string;
-    name: keyof Omit<applyJobFormData, "cv">;
+    name: keyof Omit<jobFormData, "cv">;
     placeholder: string;
     isRequired: boolean;
     type: string;
