@@ -23,6 +23,8 @@ This repository is public for **portfolio and demonstration purposes only**.
 * All intellectual property, branding, and assets belong to **Noor Home Care**.
 * The source code is visible to showcase development skills and architecture.
 
+---
+
 ## 🛠 Tech Stack
 
 * **Framework:** Next.js 15+ (App Router)
