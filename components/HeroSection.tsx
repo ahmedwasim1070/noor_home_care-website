@@ -142,7 +142,7 @@ function HeroSection({ variant = "home", imageSrc }: HeroSectionProps) {
   return (
     <main className="relative">
       {/* Background Image */}
-      <div className="relative min-h-[600px] h-[85vh] w-full">
+      <div className="relative min-h-150 h-[85vh] w-full">
         <Image
           className="object-cover"
           src={imageSrc}
