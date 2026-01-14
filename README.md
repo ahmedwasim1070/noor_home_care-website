@@ -14,6 +14,15 @@ The official landing page and digital presence for **Noor Home Care**. This plat
 
 ---
 
+## ⚖️ License & Rights
+
+**Status:** Proprietary / Closed Source
+
+This repository is public for **portfolio and demonstration purposes only**.
+
+* All intellectual property, branding, and assets belong to **Noor Home Care**.
+* The source code is visible to showcase development skills and architecture.
+
 ## 🛠 Tech Stack
 
 * **Framework:** Next.js 15+ (App Router)
