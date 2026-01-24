@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 //
 function AboutSection() {
   return (
@@ -231,12 +233,12 @@ function AboutSection() {
 
           <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
             To explore career opportunities with us, please visit our{" "}
-            <a
+            <Link
               href="/careers"
               className="text-primary font-semibold hover:text-secondary underline decoration-2 underline-offset-4 transition-colors"
             >
               careers page
-            </a>{" "}
+            </Link>{" "}
             to learn more about available positions and how you can become part
             of our dedicated team.
           </p>

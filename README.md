@@ -8,9 +8,19 @@ The official landing page and digital presence for **Noor Home Care**. This plat
 
 ## 🌐 Live Deployment
 
-| Environment | Status | Access |
-| :--- | :--- | :--- |
+| Environment    | Status        | Access                                              |
+| :------------- | :------------ | :-------------------------------------------------- |
 | **Production** | 🟢 **Online** | [**Visit Website**](https://www.noorhomecare.co.uk) |
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework:** Next.js 15+ (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Email Infrastructure:** Resend & Nodemailer
+- **Hosting & CI/CD:** Vercel
 
 ---
 
@@ -20,18 +30,8 @@ The official landing page and digital presence for **Noor Home Care**. This plat
 
 This repository is public for **portfolio and demonstration purposes only**.
 
-* All intellectual property, branding, and assets belong to **Noor Home Care**.
-* The source code is visible to showcase development skills and architecture.
-
----
-
-## 🛠 Tech Stack
-
-* **Framework:** Next.js 15+ (App Router)
-* **Language:** TypeScript
-* **Styling:** Tailwind CSS
-* **Email Infrastructure:** Resend & Nodemailer
-* **Hosting & CI/CD:** Vercel
+- All intellectual property, branding, and assets belong to **Noor Home Care**.
+- The source code is visible to showcase development skills and architecture.
 
 ---
 
