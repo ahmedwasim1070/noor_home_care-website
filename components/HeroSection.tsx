@@ -3,8 +3,7 @@
 // Imports
 import Image from "next/image";
 import { Mail, Phone } from "lucide-react";
-// Providers
-import { useGlobalProvider } from "@/providers/GlobalProvider";
+import { contactIcons, contactInfo } from "@/config/constants";
 
 // Types
 type HeroVariant = "home" | "about" | "careers";
@@ -16,15 +15,12 @@ interface HeroSectionProps {
 }
 
 function HeroSection({ variant = "home", imageSrc }: HeroSectionProps) {
-  // Providers
-  const { contactInfo, icons } = useGlobalProvider();
-
   // Contact List Creator
   const ContactList = () => (
     <ul className="space-y-1">
       {contactInfo.map((info, idx) => (
         <li key={idx} className="flex flex-row items-center gap-x-2">
-          <span className="text-secondary shrink-0">{icons[idx]}</span>
+          <span className="text-secondary shrink-0">{contactIcons[idx]}</span>
           <span className="text-primary text-sm md:text-base break-all sm:break-normal">
             {info}
           </span>

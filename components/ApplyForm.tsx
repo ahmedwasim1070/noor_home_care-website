@@ -1,7 +1,15 @@
 "use client";
 
 // Imports
-import { useState, useRef, ChangeEvent, FormEvent, DragEvent } from "react";
+import {
+  useState,
+  useRef,
+  ChangeEvent,
+  FormEvent,
+  DragEvent,
+  useEffect,
+} from "react";
+import { useSearchParams, usePathname } from "next/navigation";
 import { Upload, FileText, X, Send, Loader2, AlertCircle } from "lucide-react";
 // Types
 import {
@@ -31,6 +39,22 @@ function ApplyForm() {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-scroll refs and hooks
+  const sectionRef = useRef<HTMLElement>(null);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/careers" && searchParams.get("state") === "apply_now") {
+      setTimeout(() => {
+        sectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    }
+  }, [pathname, searchParams]);
 
   // Configuration
   const inputs: jobFormInputs[] = [
@@ -147,7 +171,7 @@ function ApplyForm() {
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
       const data = (await res.json()) as ApiResponse<null | never>;
       if (!data.success) {
@@ -165,7 +189,7 @@ function ApplyForm() {
         "Message : ",
         msg,
         "Error : ",
-        err
+        err,
       );
       //
     } finally {
@@ -182,6 +206,7 @@ function ApplyForm() {
 
   return (
     <section
+      ref={sectionRef}
       className="max-w-4xl mx-auto px-6 py-12"
       aria-label="Apply at home care"
     >
@@ -265,8 +290,8 @@ function ApplyForm() {
                     formErrors.cv
                       ? "border-red-300 bg-red-50 hover:bg-red-100"
                       : dragActive
-                      ? "border-secondary bg-light-secondary/30 scale-[1.01]"
-                      : "border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-secondary/50"
+                        ? "border-secondary bg-light-secondary/30 scale-[1.01]"
+                        : "border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-secondary/50"
                   }`}
                   onDragEnter={handleDrag}
                   onDragLeave={handleDrag}
@@ -290,8 +315,8 @@ function ApplyForm() {
                         formErrors.cv
                           ? "text-red-500"
                           : dragActive
-                          ? "text-secondary"
-                          : "text-gray-400 group-hover:text-secondary"
+                            ? "text-secondary"
+                            : "text-gray-400 group-hover:text-secondary"
                       }`}
                     />
                   </div>

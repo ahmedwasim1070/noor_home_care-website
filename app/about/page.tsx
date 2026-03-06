@@ -7,7 +7,7 @@ import HeroSection from "@/components/HeroSection";
 
 //
 export const metadata: Metadata = {
-  title: "About | Who We Are | Noor Home Care",
+  title: "About Us | Noor Home Care UK",
 };
 
 //

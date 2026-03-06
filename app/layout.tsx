@@ -8,7 +8,7 @@ import { GlobalProvider } from "@/providers/GlobalProvider";
 // Metadata
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.noorhomecare.co.uk"),
-  title: "Home Care | Caregiver & Caretaker For Elderly | Noor Home Care",
+  title: "Noor Home Care UK | Caregivers & Caretakers for the Elderly",
   description:
     "Caregiver Services For Elderly At Home | Hire Caretaker For Your Senior Loved Ones | Noor Home Care",
   authors: [{ name: "ahmedwasim1070" }],

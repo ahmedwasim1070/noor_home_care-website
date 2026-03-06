@@ -5,9 +5,10 @@ import HeroSection from "@/components/HeroSection";
 import EmployerFeaturesSection from "@/components/EmployerFeaturesSection";
 import WelcomeSection from "@/components/WelcomeSection";
 import ApplyForm from "@/components/ApplyForm";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Careers | Home Care | Noor Home Care",
+  title: "Careers & Jobs | Noor Home Care UK",
 };
 
 //
@@ -18,7 +19,9 @@ export default function Careers() {
         <HeroSection variant="careers" imageSrc="/images/career.webp" />
         <WelcomeSection variant="careers" />
         <EmployerFeaturesSection />
-        <ApplyForm />
+        <Suspense fallback={<div>Loading application form...</div>}>
+          <ApplyForm />
+        </Suspense>
       </section>
     </>
   );
