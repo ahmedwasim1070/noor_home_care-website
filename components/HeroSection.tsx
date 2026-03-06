@@ -48,7 +48,7 @@ function HeroSection({ variant = "home", imageSrc }: HeroSectionProps) {
           <ContactList />
         </div>
 
-        {/*  */}
+        {/* */}
         <div className="w-1 h-full min-h-40 rounded-full bg-primary hidden md:block"></div>
       </div>
 
@@ -120,7 +120,7 @@ function HeroSection({ variant = "home", imageSrc }: HeroSectionProps) {
         </div>
       </div>
 
-      {/*  */}
+      {/* */}
       <div className="w-24 h-1 md:w-1 md:h-32 bg-white rounded-full"></div>
 
       {/* Right */}
@@ -149,12 +149,24 @@ function HeroSection({ variant = "home", imageSrc }: HeroSectionProps) {
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 flex justify-center items-center bg-black/20 overflow-y-auto overflow-x-hidden">
-        {/*  */}
+      <div className="absolute inset-0 flex flex-col justify-center items-center bg-black/20 overflow-y-auto overflow-x-hidden">
+        {/* */}
         <div className="w-full flex justify-center p-4">
           {variant === "home" && <PrimaryCard />}
           {(variant === "about" || variant === "careers") && <SecondaryCard />}
         </div>
+
+        {/* Apply Now Button (Careers Only) */}
+        {variant === "careers" && (
+          <div className="mt-8">
+            <a
+              href="?state=apply_now"
+              className="inline-flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-bold text-lg py-4 px-10 rounded-full shadow-2xl animate-bounce transition-colors"
+            >
+              Apply Now
+            </a>
+          </div>
+        )}
       </div>
     </main>
   );
